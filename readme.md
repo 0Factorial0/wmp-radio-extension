@@ -2,6 +2,7 @@
 
 go to chrome://extensions or equivalent
 enable dev mode
+add the extension folder (load unpacked)
 pin and click the extension
 
 free to use
