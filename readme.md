@@ -1,12 +1,12 @@
 # Simulating Old Windows Media Player Animations & Connecting It Into A Radio Syncer // Web Extension
 
-go to chrome://extensions or equivalent
+1. go to chrome://extensions or equivalent
 
-enable dev mode
+2. enable dev mode
 
-add the extension folder (load unpacked)
+3. add the extension folder (load unpacked)
 
-pin and click the extension
+4. pin and click the extension
 
 
 free to use
