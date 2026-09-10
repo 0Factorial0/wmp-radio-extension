@@ -1,5 +1,7 @@
 # Simulating Old Windows Media Player Animations & Connecting It Into A Radio Syncer // Web Extension
 
+### if you want to add radios be aware of the cors policy, only use direct https mp3s
+
 contains 46 different animations. demo here: https://github.com/0Factorial0/wmp-radio/blob/main/index.html
 
 0. go to chrome://extensions or equivalent
