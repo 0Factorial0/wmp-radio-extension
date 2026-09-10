@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "WMP Battery Radio",
+  "version": "1.0",
+  "description": "Embeddable radio visualizer popup",
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "permissions": [
+    "activeTab"
+  ]
+}

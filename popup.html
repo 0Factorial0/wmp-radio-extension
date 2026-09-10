@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>WMP Battery - Embeddable Block</title>
+        <style>
+            .embed-block {
+                background: radial-gradient(circle at 50% 0%, #10152f 0%, #080914 38%, #030308 100%);
+                color: #f4f7ff;
+                margin: 0;
+                padding: 15px;
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                font-family: monospace;
+                border: none;
+                box-shadow: none;
+                border-radius: 0;
+                position: relative;
+                width: 230px;
+            }
+            .embed-block h1 { 
+                margin: 0 0 5px 0;
+                font-size: 14px;
+                color: #61ffda;
+                text-shadow: 0 0 8px currentColor, 0 0 22px currentColor;
+                letter-spacing: 2px;
+            }
+            .embed-block .main-container {
+                border: 2px solid #61ffda;
+                margin-bottom: 10px;
+                box-shadow: 0 0 15px rgba(97,255,218,.22), 0 0 45px rgba(139,92,246,.10);
+                background: linear-gradient(135deg, rgba(97,255,218,.12), rgba(139,92,246,.10), rgba(255,70,180,.08));
+                border-radius: 0;
+            }
+            .embed-block canvas#mainCvs {
+                width: 160px;
+                height: 160px;
+                background: #02030a;
+                display: block;
+                image-rendering: pixelated;
+            }
+            .embed-block .radio-box {
+                margin-bottom: 10px;
+                background: linear-gradient(145deg, #111426, #080914);
+                border: 1px solid #8b5cf6;
+                padding: 6px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                box-shadow: 0 0 12px rgba(139,92,246,.28), inset 0 0 12px rgba(97,255,218,.06);
+                border-radius: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .embed-block .radio-box select, .embed-block .radio-box audio {
+                background: #02030a;
+                color: #61ffda;
+                font-family: monospace;
+                font-size: 10px;
+                outline: none;
+            }
+            .embed-block .radio-box select {
+                border: 1px solid #61ffda;
+                border-radius: 0;
+            }
+            .embed-block .transition-info {
+                margin-top: 0;
+                margin-bottom: 5px;
+                min-height: 14px;
+                color: #61ffda;
+                font-size: 9px;
+                letter-spacing: 1px;
+                text-align: center;
+                text-shadow: 0 0 6px currentColor;
+            }
+            html, body {
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100%;
+                height: 100%;
+                background-color: #ffffff; /* Match your extension's background color */
+            }
+            #popup-root {
+                margin: 0;
+                padding: 0;
+                overflow: hidden;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="embed-block">
+            <div class="radio-box">
+                <select id="radioSelect" onchange="changeStation(this)">
+                    <option value="https://icast.connectmedia.hu/5202/live.mp3">Lounge FM</option>
+                    <option value="https://icecast.radiofrance.fr/mouv-midfi.mp3">Mouv' France</option>
+                    <option value="https://stream.radio-calico.com/calico.mp3">Radio Calico</option>
+                    <option value="https://icecast.radiofrance.fr/fip-midfi.mp3">FIP France</option>
+                    <option value="https://icecast.radiofrance.fr/fiprock-midfi.mp3">FIP Rock</option>
+                    <option value="https://icecast.radiofrance.fr/fipjazz-midfi.mp3">FIP Jazz</option>
+                    <option value="https://icecast.radiofrance.fr/fipworld-midfi.mp3">FIP World</option>
+                    <option value="https://icecast.radiofrance.fr/fipgroove-midfi.mp3">FIP Groove</option>
+                    <option value="https://icecast.radiofrance.fr/fipnouveautes-midfi.mp3">FIP Nouveautes</option>
+                    <option value="https://icecast.radiofrance.fr/francemusique-midfi.mp3">France Musique</option>
+                    <option value="https://icecast.omroep.nl/radio2-bb-mp3">NPO Radio 2</option>
+                    <option value="https://icecast.omroep.nl/radio5-bb-mp3">NPO Radio 5</option>
+                    <option value="https://wdr-wdr4-live.icecast.wdr.de/wdr/wdr4/live/mp3/128/stream.mp3">WDR 4</option>
+                    <option value="https://media-ice.musicradio.com/ClassicFMMP3">Classic FM UK</option>
+                    <option value="https://media-ice.musicradio.com/SmoothUKMP3">Smooth Radio UK</option>
+                    <option value="https://media-ice.musicradio.com/LBCMP3">LBC UK</option>
+                    <option value="https://stream.srg-ssr.ch/m4a/rsf/def_128.m4a">Option Musique</option>
+                    <option value="https://stream.nucrooze.com/listen/nucrooze/radio.mp3">NUCROOZE Radio</option>
+                    <option value="https://streams.fluxfm.de/jazzschwarz/mp3-128/streams.fluxfm.de/">Jazzradio Schwarzenstein</option>
+                    <option value="https://streams.fluxfm.de/jazzschwarz/mp3-320/streams.fluxfm.de/">Jazzradio Schwarzenstein 320</option>
+                    <option value="https://jazzradio.ice.infomaniak.ch/frequencejazz-high.mp3">Jazz Radio Nationale</option>
+                    <option value="https://jazzlounge.ice.infomaniak.ch/jazzlounge-high.mp3">Jazz Radio Lounge</option>
+                    <option value="https://jazz-wr04.ice.infomaniak.ch/jazz-wr04-128.mp3">Jazz Radio Electro Swing</option>
+                    <option value="https://jazz-wr08.ice.infomaniak.ch/jazz-wr08-128.mp3">Jazz Radio Groove</option>
+                    <option value="https://centova5.transmissaodigital.com:20104/live">Bossa Jazz Brasil</option>
+                    <option value="http://0n-smoothjazz.radionetz.de/0n-smoothjazz.mp3">0N Smooth Jazz</option>
+                    <option value="https://strm112.1.fm/top40_mobile_mp3">1.FM Absolute Top 40</option>
+                    <option value="https://strm112.1.fm/90s_mobile_mp3">1.FM Absolute 90s</option>
+                    <option value="https://strm112.1.fm/hits2000_mobile_mp3">1.FM Top Hits 2000</option>
+                    <option value="https://strm112.1.fm/allmixedup_mobile_mp3">1.FM All Times Hits</option>
+                    <option value="https://streams.radiobob.de/bob-alternative/mp3-192/streams.radiobob.de/">Radio BOB Alternative Rock</option>
+                    <option value="https://streams.radiobob.de/bob-grunge/mp3-192/streams.radiobob.de/">Radio BOB Grunge</option>
+                    <option value="https://streams.radiobob.de/bob-punk/mp3-192/streams.radiobob.de/">Radio BOB Punk</option>
+                    <option value="https://streams.radiobob.de/bob-80srock/mp3-192/streams.radiobob.de/">Radio BOB 80s Rock</option>
+                    <option value="https://streams.radiobob.de/bob-90srock/mp3-192/streams.radiobob.de/">Radio BOB 90s Rock</option>
+                    <option value="https://stream.liferadio.at/clrock/mp3-192/app/">Life Radio Classic Rock</option>
+                    <option value="http://51.255.8.139:8738/stream">Metal Live Radio</option>
+                    <option value="http://strm112.1.fm/club_mobile_mp3">1.FM Club</option>
+                    <option value="http://strm112.1.fm/trance_mobile_mp3">1.FM Absolute Trance</option>
+                    <option value="http://strm112.1.fm/deephouse_mobile_mp3">1.FM Deep House</option>
+                    <option value="http://strm112.1.fm/deeptech_mobile_mp3">1.FM Deep Techno / Deep House</option>
+                    <option value="http://strm112.1.fm/dance_mobile_mp3">1.FM Dance</option>
+                    <option value="http://strm112.1.fm/psytrance_mobile_mp3">1.FM PsyTrance</option>
+                    <option value="http://strm112.1.fm/dubstep_mobile_mp3">1.FM Dubstep</option>
+                    <option value="http://strm112.1.fm/reggaeton_mobile_mp3">1.FM Reggaeton</option>
+                    <option value="http://strm112.1.fm/ccountry_mobile_mp3">1.FM Classic Country</option>
+                    <option value="http://strm112.1.fm/country_mobile_mp3">1.FM Country</option>
+                    <option value="http://strm112.1.fm/classical_mobile_mp3">1.FM Classical</option>
+                    <option value="http://stream.klassikradio.de/opera/mp3-192/www.klassikradio.de/">Klassik Radio Opera</option>
+                    <option value="http://stream.klassikradio.de/piano/mp3-192/www.klassikradio.de/">Klassik Radio Piano</option>
+                    <option value="http://stream.klassikradio.de/barock/mp3-192/www.klassikradio.de/">Klassik Radio Baroque</option>
+                    <option value="http://strm112.1.fm/slowjamz_mobile_mp3">1.FM Slow Jamz</option>
+                    <option value="http://strm112.1.fm/funkyexpress_mobile_mp3">1.FM Funky Express</option>
+                    <option value="http://strm112.1.fm/oldschool_mobile_mp3">1.FM Adult Urban Hits</option>
+                    <option value="http://strm112.1.fm/samba_mobile_mp3">1.FM Samba Hits Brazil</option>
+                    <option value="http://strm112.1.fm/sambarock_mobile_mp3">1.FM Samba Rock</option>
+                    <option value="http://strm112.1.fm/bossanova_mobile_mp3">1.FM Bossa Nova</option>
+                    <option value="http://strm112.1.fm/sertanejo_mobile_mp3">1.FM Sertanejo</option>
+                    <option value="http://strm112.1.fm/80s_90s_mobile_mp3">1.FM 80s & 90s</option>
+                    <option value="http://strm112.1.fm/magic80_mobile_mp3">1.FM Magic 80s</option>
+                    <option value="https://stream.liferadio.at/80er/mp3-192/app/">Life Radio 80s</option>
+                    <option value="http://strm112.1.fm/moviesoundtracks_mobile_mp3">1.FM Movie Soundtracks</option>
+                    <option value="http://stream.klassikradio.de/movie/mp3-192/www.klassikradio.de/">Klassik Radio Movie</option>
+                    <option value="https://stream.liferadio.at/chillout/mp3-192/app/">Life Radio Chillout</option>
+                    <option value="http://strm112.1.fm/costadelmarchillout_mobile_mp3">1.FM Costa Del Mar Chillout</option>
+                    <option value="http://strm112.1.fm/ibizachill_mobile_mp3">1.FM Ibiza Chill</option>
+                    <option value="https://streams.radiobob.de/bob-blues/mp3-192/streams.radiobob.de/">Radio BOB Blues</option>
+                    <option value="http://jazzblues.ice.infomaniak.ch/jazzblues-high.mp3">Jazz Radio Blues</option>
+                    <option value="http://strm112.1.fm/gospel_mobile_mp3">1.FM Urban Gospel</option>
+                    <option value="http://strm112.1.fm/x_mobile_mp3">1.FM Alternative Rock</option>
+                    <option value="http://stream.fr.morow.com:8080/morow_hi.aacp">Morow Progressive Rock</option>
+                </select>
+                <audio id="radioPlayer" controls crossorigin="anonymous" src="https://icast.connectmedia.hu/5202/live.mp3" style="width: 100%; height: 22px;"></audio>
+            </div>
+            <h1 id="mainTitle"></h1>
+            <div class="main-container">
+                <canvas id="mainCvs" width="160" height="160"></canvas>
+            </div>
+            <div class="transition-info" id="transitionInfo"></div>
+        </div>
+        <script src="popup.js"></script>
+    </body>
+</html>
