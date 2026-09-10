@@ -5,7 +5,6 @@
 3. add the extension folder (load unpacked)
 4. pin and click the extension
 
-
 free to use
 
 //0x0
